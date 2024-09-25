@@ -4,33 +4,38 @@ package com.Financeiro.APIFinanceiro.controler;
 import com.Financeiro.APIFinanceiro.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/pessoa")
+@RequestMapping("api/meta")
+@RequiredArgsConstructor
+@CrossOrigin("*")
 public class MetaControler {
     @Autowired
-    private MetaService metaService;
+    private MetaService service;
 
-    @GetMapping("/")
-    public List<Meta> listarMeta(){
-        return this.MetaService.listarMeta();
+    @GetMapping(value = "/{id}")
+    public Meta findById(@PathVariable Long id) {
+        return this.service.findById(id);
     }
 
-    @PostMapping("/")
-    public void salvarMeta(@RequestBody Meta meta){
-        this.MetaService.adicionarPessoa(meta);
+    @GetMapping
+    public List<Meta> findAll() {
+        return this.service.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Meta pesquisarMeta(@RequestParam("id") Integer id){
-        return this.MetaService.buscarMetaPorId(id);
+    @PostMapping
+    public Meta save(@RequestBody Meta meta) {
+        return this.service.save(meta);
     }
 
-    @PutMapping("/")
-    public void alterarMeta(@RequestBody Meta meta){
-        this.MetaService.alterarMeta(meta);
+    @PutMapping
+    public Meta update(@RequestBody Meta meta) {
+        return this.service.update(meta);
     }
-    @DeleteMapping("/{id}")
-    public void removerMeta(@PathVariable("id") Integer id){
-        this.MetaService.excluirMeta(id);
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(Long id) {
+        this.service.delete(id);
     }
 }

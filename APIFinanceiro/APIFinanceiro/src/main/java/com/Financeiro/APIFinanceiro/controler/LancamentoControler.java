@@ -5,33 +5,43 @@ import com.Financeiro.APIFinanceiro.service.LancamentoService;
 import com.Financeiro.APIFinanceiro.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/pessoa")
+@RequestMapping("api/lancamento")
+@RequiredArgsConstructor
+@CrossOrigin("*")
 public class LancamentoControler {
     @Autowired
-    private LancamentoService lancamentoService;
+    private LancamentoService service;
 
-    @GetMapping("/")
-    public List<Lancamento> listarLancamento(){
-        return this.lancamentoService.listarLancamento();
-    }
-
-    @PostMapping("/")
-    public void salvarLancamento(@RequestBody Lancamento lancamento){
-        this.lancamentoService.adicionarLancamento(lancamento);
+    @GetMapping(value = "/{id}")
+    public Lancamento findById(@PathVariable Long id) {
+        return this.service.findById(id);
     }
 
-    @GetMapping("/{id}")
-    public Pessoa pesquisarLancamento(@RequestParam("id") Integer id){
-        return this.lancamentoService.buscarLancamentoPorId(id);
+    @GetMapping
+    public List<Lancamento> findAll() {
+        return this.service.findAll();
     }
 
-    @PutMapping("/")
-    public void alterarLancamento(@RequestBody Lancamento lancamento){
-        this.lancamentoService.alterarLancamento(lancamento);
+    @PostMapping
+    public Lancamento save(@RequestBody Lancamento lancamento) {
+        return this.service.save(lancamento);
     }
-    @DeleteMapping("/{id}")
-    public void removerLancamento(@PathVariable("id") Integer id){
-        this.lancamentoService.excluirLancamento(id);
+
+    @PutMapping
+    public Lancamento update(@RequestBody Lancamento lancamento) {
+        return this.service.update(lancamento);
     }
+    @DeleteMapping(value = "/{id}")
+    public void delete(Long id) {
+        this.service.delete(id);
+    }
+
+    @PostMapping(value = "/filter")
+    public List<Lancamento> filter(@RequestBody LancamentoFilterDTO lancamento) {
+        return this.service.filter(lancamento);
+    }
+
 }

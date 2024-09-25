@@ -4,33 +4,38 @@ package com.Financeiro.APIFinanceiro.controler;
 import com.Financeiro.APIFinanceiro.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/pessoa")
+@RequestMapping("api/pessoa")
+@RequiredArgsConstructor
+@CrossOrigin("*")
 public class PessoaControler {
     @Autowired
-    private PessoaService pessoaService;
+    private PessoaService service;
 
-    @GetMapping("/")
-    public List<Pessoa> listarPessoas(){
-        return this.pessoaService.listarPessoas();
+    @GetMapping(value = "/{id}")
+    public Pessoa findById(@PathVariable Long id) {
+        return this.service.findById(id);
     }
 
-    @PostMapping("/")
-    public void salvarPessoa(@RequestBody Pessoa pessoa){
-        this.pessoaService.adicionarPessoa(pessoa);
+    @GetMapping
+    public List<Pessoa> findAll() {
+        return this.service.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Pessoa pesquisarPessoa(@RequestParam("id") Integer id){
-        return this.pessoaService.buscarPessoaPorId(id);
+    @PostMapping
+    public Pessoa save(@RequestBody Pessoa pessoa) {
+        return this.service.save(pessoa);
     }
 
-    @PutMapping("/")
-    public void alterarPessoa(@RequestBody Pessoa pessoa){
-        this.pessoaService.alterarPessoa(pessoa);
+    @PutMapping
+    public Pessoa update(@RequestBody Pessoa pessoa) {
+        return this.service.update(pessoa);
     }
-    @DeleteMapping("/{id}")
-    public void removerPessoa(@PathVariable("id") Integer id){
-        this.pessoaService.excluirPessoa(id);
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(Long id){
+        this.service.delete(id);
     }
 }
