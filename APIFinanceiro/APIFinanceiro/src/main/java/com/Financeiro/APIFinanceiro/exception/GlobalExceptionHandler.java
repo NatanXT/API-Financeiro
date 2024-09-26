@@ -1,7 +1,15 @@
 package com.Financeiro.APIFinanceiro.exception;
 
+import com.Financeiro.APIFinanceiro.exception.custom.ApplicationException;
+import com.Financeiro.APIFinanceiro.exception.custom.NotFoundException;
+import com.Financeiro.APIFinanceiro.exception.custom.RegraNegocioException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +19,8 @@ public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePessoaNotFoundException(NotFoundException ex, WebRequest request) {
-        logger.error("Pessoa not found: {}", ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex, WebRequest request) {
+        logger.error("Not Found: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage(),
                 request.getDescription(false),
@@ -21,16 +29,17 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(RegraNegocioException.class)
-    public ResponseEntity<ErrorResponse> handleApplicationdException(NotFoundException ex, WebRequest request) {
-        logger.error("Regra de Negocio: {}", ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleRegraNegocioException(RegraNegocioException ex, WebRequest request) {
+        logger.error("Regra de Negócio: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage(),
                 request.getDescription(false),
                 LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value()
+                HttpStatus.BAD_REQUEST.value()
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

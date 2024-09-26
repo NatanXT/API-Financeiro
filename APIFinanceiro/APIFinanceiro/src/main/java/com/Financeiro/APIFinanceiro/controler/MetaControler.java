@@ -1,8 +1,10 @@
-package com.Financeiro.APIFinanceiro.controler;
+package com.Financeiro.APIFinanceiro.controller;
 
-
-import com.Financeiro.APIFinanceiro.service.PessoaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.Financeiro.APIFinanceiro.model.Meta;
+import com.Financeiro.APIFinanceiro.service.MetaService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -11,8 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class MetaControler {
-    @Autowired
-    private MetaService service;
+
+    private final MetaService service;
 
     @GetMapping(value = "/{id}")
     public Meta findById(@PathVariable Long id) {
@@ -35,7 +37,8 @@ public class MetaControler {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
 }

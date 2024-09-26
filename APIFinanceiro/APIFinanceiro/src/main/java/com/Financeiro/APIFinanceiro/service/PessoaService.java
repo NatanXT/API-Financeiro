@@ -1,38 +1,36 @@
 package com.Financeiro.APIFinanceiro.service;
 
-import com.Financeiro.APIFinanceiro.DTO.PessoaDto;
+import com.Financeiro.APIFinanceiro.exception.custom.NotFoundException;
 import com.Financeiro.APIFinanceiro.model.Pessoa;
 import com.Financeiro.APIFinanceiro.repository.PessoaRepository;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
-@SpringBootApplication
 @RequiredArgsConstructor
 public class PessoaService {
-    private final PessoaRepository pessoaRepository;
-    public Pessoa findById(Long id){
-        return this.pessoaRepository.findById(id).orElseThrow(()->new PessoaNotFoundException("Pessoa não encontrada!"));
 
+    private final PessoaRepository repository;
+
+    public Pessoa findById(Long id) {
+        return this.repository.findById(id).orElseThrow(() -> new NotFoundException("Pessoa não encontrada"));
     }
+
     public List<Pessoa> findAll() {
-        return this.pessoaRepository.findAll();
+        return this.repository.findAll();
     }
 
-    public Pessoa save(PessoaDto pessoaDto) {
-        return this.pessoaRepository.save(pessoaDto.mapToEntity());
+    public Pessoa save(Pessoa pessoa) {
+        return this.repository.save(pessoa);
     }
 
-    public Pessoa update(PessoaDto pessoaDto) {
-        if (Objects.isNull(pessoaDto.id())) return this.save(pessoaDto);
-        return this.pessoaRepository.save(pessoaDto.mapToEntity());
+    public Pessoa update(Pessoa pessoa) {
+        return this.repository.save(pessoa);
     }
 
-    public void delete(Long id){
-        this.pessoaRepository.deleteById(id);
+    public void delete(Long id) {
+        this.repository.deleteById(id);
     }
-}
 }

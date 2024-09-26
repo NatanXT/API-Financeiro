@@ -1,72 +1,32 @@
 package com.Financeiro.APIFinanceiro.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.Financeiro.APIFinanceiro.enums.CategoriaEnum;
+import com.Financeiro.APIFinanceiro.enums.TipoLancamentoEnum;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Objects;
+import java.math.BigDecimal;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
+@Table(name = "META")
 public class Meta {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private double id;
-    private String tipo;
-    private String valor;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String meta;
+    private BigDecimal valor;
+    private String descricao;
 
-    public double getId() {
-        return id;
-    }
+    @Enumerated(EnumType.STRING)
+    private TipoLancamentoEnum tipo;
 
-    public void setId(double id) {
-        this.id = id;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getValor() {
-        return valor;
-    }
-
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
-
-    public Meta() {
-    }
-
-    public Meta(double id, String tipo, String valor) {
-        this.id = id;
-        this.tipo = tipo;
-        this.valor = valor;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Meta meta = (Meta) o;
-        return Double.compare(id, meta.id) == 0 && Objects.equals(tipo, meta.tipo) && Objects.equals(valor, meta.valor);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, tipo, valor);
-    }
-
-    @Override
-    public String toString() {
-        return "Meta{" +
-                "id=" + id +
-                ", tipo='" + tipo + '\'' +
-                ", valor='" + valor + '\'' +
-                '}';
-    }
+    @Enumerated(EnumType.STRING)
+    private CategoriaEnum categoria;
 }

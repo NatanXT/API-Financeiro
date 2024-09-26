@@ -1,9 +1,11 @@
 package com.Financeiro.APIFinanceiro.controler;
 
-
+import com.Financeiro.APIFinanceiro.dto.LancamentoFilterDTO;
+import com.Financeiro.APIFinanceiro.model.Lancamento;
 import com.Financeiro.APIFinanceiro.service.LancamentoService;
-import com.Financeiro.APIFinanceiro.service.PessoaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -12,8 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class LancamentoControler {
-    @Autowired
-    private LancamentoService service;
+
+    private final LancamentoService service;
 
     @GetMapping(value = "/{id}")
     public Lancamento findById(@PathVariable Long id) {
@@ -34,14 +36,15 @@ public class LancamentoControler {
     public Lancamento update(@RequestBody Lancamento lancamento) {
         return this.service.update(lancamento);
     }
+
     @DeleteMapping(value = "/{id}")
-    public void delete(Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
 
     @PostMapping(value = "/filter")
-    public List<Lancamento> filter(@RequestBody LancamentoFilterDTO lancamento) {
-        return this.service.filter(lancamento);
+    public List<Lancamento> filter(@RequestBody LancamentoFilterDTO lancamentoFilterDTO) {
+        return this.service.filter(lancamentoFilterDTO);
     }
-
 }

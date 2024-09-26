@@ -1,10 +1,10 @@
 package com.Financeiro.APIFinanceiro.controler;
 
-import com.spring.boot.controlefinanceiro.model.Grupo;
+import com.Financeiro.APIFinanceiro.model.Grupo;
 import com.Financeiro.APIFinanceiro.service.GrupoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class GrupoControler {
-    @Autowired
-    private GrupoService service;
+
+    private final GrupoService service;
 
     @GetMapping(value = "/{id}")
     public Grupo findById(@PathVariable Long id) {
@@ -37,7 +37,8 @@ public class GrupoControler {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
 }

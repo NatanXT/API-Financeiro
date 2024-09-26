@@ -1,8 +1,10 @@
 package com.Financeiro.APIFinanceiro.controler;
 
-
+import com.Financeiro.APIFinanceiro.model.Pessoa;
 import com.Financeiro.APIFinanceiro.service.PessoaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -11,8 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class PessoaControler {
-    @Autowired
-    private PessoaService service;
+
+    private final PessoaService service;
 
     @GetMapping(value = "/{id}")
     public Pessoa findById(@PathVariable Long id) {
@@ -35,7 +37,8 @@ public class PessoaControler {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(Long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         this.service.delete(id);
     }
 }

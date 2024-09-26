@@ -1,38 +1,46 @@
 package com.Financeiro.APIFinanceiro.service;
 
-import com.Financeiro.APIFinanceiro.DTO.LancamentoDto;
+import com.Financeiro.APIFinanceiro.DTO.LancamentoFilterDTO;
+import com.Financeiro.APIFinanceiro.exception.custom.NotFoundException;
 import com.Financeiro.APIFinanceiro.model.Lancamento;
 import com.Financeiro.APIFinanceiro.repository.LancamentoRepository;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
-@SpringBootApplication
 @RequiredArgsConstructor
 public class LancamentoService {
-    private final LancamentoRepository lancamentoRepository;
-    public Lancamento findById(Long id){
-        return this.lancamentoRepository.findById(id).orElseThrow(()->new LancamentoNotFoundException("Lancamento não encontrado!"));
 
+    private final LancamentoRepository repository;
+
+    public Lancamento findById(Long id) {
+        return this.repository.findById(id).orElseThrow(() -> new NotFoundException("Lançamento não encontrado"));
     }
+
     public List<Lancamento> findAll() {
-        return this.lancamentoRepository.findAll();
+        return this.repository.findAll();
     }
 
-    public Lancamento save(LancamentoDto LancamentoDto) {
-        return this.lancamentoRepository.save(LancamentoDto.mapToEntity());
+    public Lancamento save(Lancamento lancamento) {
+        return this.repository.save(lancamento);
     }
 
-    public Lancamento update(LancamentoDto lancamentoDto) {
-        if (Objects.isNull(lancamentoDto.id())) return this.save(lancamentoDto);
-        return this.lancamentoRepository.save(lancamentoDto.mapToEntity());
+    public Lancamento update(Lancamento lancamento) {
+        return this.repository.save(lancamento);
     }
 
-    public void delete(Long id){
-        this.lancamentoRepository.deleteById(id);
+    public void delete(Long id) {
+        this.repository.deleteById(id);
     }
-}
+
+    public List<Lancamento> filter(LancamentoFilterDTO filterDTO) {
+        return this.repository.findByNomeContainingOrTipoOrDataOrCategoria(
+                filterDTO.nome(),
+                filterDTO.tipo(),
+                filterDTO.data(),
+                filterDTO.categoria()
+        );
+    }
 }

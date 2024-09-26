@@ -1,38 +1,41 @@
-PessoaServicepackage com.Financeiro.APIFinanceiro.service;
+package com.Financeiro.APIFinanceiro.service;
 
-import com.Financeiro.APIFinanceiro.DTO.MetaDto;
+import com.Financeiro.APIFinanceiro.exception.custom.NotFoundException;
 import com.Financeiro.APIFinanceiro.model.Meta;
 import com.Financeiro.APIFinanceiro.repository.MetaRepository;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
-@SpringBootApplication
-@RequiredArgsConstructor
 public class MetaService {
-    private final MetaRepository metaRepository;
-    public Meta findById(Long id){
-        return this.metaRepository.findById(id).orElseThrow(()->new MetaNotFoundException("Meta não encontrada!"));
 
+    private final MetaRepository repository;
+
+    @Autowired
+    public MetaService(MetaRepository repository) {
+        this.repository = repository;
     }
+
+    public Meta findById(Long id) {
+        return this.repository.findById(id).orElseThrow(() -> new NotFoundException("Meta não encontrada"));
+    }
+
     public List<Meta> findAll() {
-        return this.metaRepository.findAll();
+        return this.repository.findAll();
     }
 
-    public Meta save(MetaDto metaDto) {
-        return this.metaRepository.save(metaDto.mapToEntity());
+    public Meta save(Meta meta) {
+        return this.repository.save(meta);
     }
 
-    public Meta update(MetaDto metaDto) {
-        if (Objects.isNull(metaDto.id())) return this.save(metaDto);
-        return this.metaRepository.save(metaDto.mapToEntity());
+    public Meta update(Meta meta) {
+        return this.repository.save(meta);
     }
 
-    public void delete(Long id){
-        this.metaRepository.deleteById(id);
+    public void delete(Long id) {
+        this.repository.deleteById(id);
     }
 }
-}
+

@@ -1,7 +1,7 @@
 package com.Financeiro.APIFinanceiro.DTO;
 
-import com.spring.boot.controlefinanceiro.enums.CategoriaEnum;
-import com.spring.boot.controlefinanceiro.enums.TipoLancamentoEnum;
+import com.Financeiro.APIFinanceiro.enums.CategoriaEnum;
+import com.Financeiro.APIFinanceiro.enums.TipoLancamentoEnum;
 
 import java.time.LocalDate;
 
