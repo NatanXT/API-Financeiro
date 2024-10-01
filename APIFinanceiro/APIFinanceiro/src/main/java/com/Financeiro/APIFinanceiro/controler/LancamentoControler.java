@@ -1,6 +1,6 @@
 package com.Financeiro.APIFinanceiro.controler;
 
-import com.Financeiro.APIFinanceiro.dto.LancamentoFilterDTO;
+import com.Financeiro.APIFinanceiro.DTO.LancamentoFilterDTO;
 import com.Financeiro.APIFinanceiro.model.Lancamento;
 import com.Financeiro.APIFinanceiro.service.LancamentoService;
 import lombok.RequiredArgsConstructor;
